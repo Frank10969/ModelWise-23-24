@@ -211,28 +211,29 @@ def main():
     # -------------------Datensatz auswählen--------------------
     if df is not None:
         data = df
-        st.write('Datensatz anpassen')
-        #st.dataframe(data)
-
+        st.sidebar.write('Datensatz anpassen:')
 
         all_columns = data.columns.tolist()
-        if st.checkbox('Select All'):
+        if st.sidebar.checkbox('Select All'):
             selected_columns = all_columns[0:]
         else:
-            selected_columns = st.multiselect('Select columns', all_columns, all_columns[0])
-            st.dataframe(data[selected_columns])
+            selected_columns = st.sidebar.multiselect('Select columns', all_columns, all_columns[0])
+            #st.dataframe(data[selected_columns])
         df = data[selected_columns]
-        #st.dataframe(df)
 
-        # Beispiel eines einfachen Diagramms
-        if st.checkbox('Modelle trainieren'):
-            #df_new, df_target = load_data()
+        # Hinzufügen des Sliders zur Auswahl des Prozentsatzes des Datensatzes
+        #percentage = st.sidebar.slider('Wähle den Prozentsatz des Datensatzes:', min_value=10, max_value=100, value=70)
+        #df = df.sample(frac=percentage / 100.0)
+
+        if st.sidebar.checkbox('Modelle trainieren'):
+
+            # Daten aufteilen
             data_train, data_test, target_train, target_test, le = prepare_data(df, df_target)
-            st.write('Datensatz ausgewählt')
+            st.sidebar.write('Datensatz ausgewählt')
 
 
     # -------------------Modell auswählen--------------------
-    model_option = st.selectbox('Wähle ein Modell für die Analyse:', ['Wähle das Modell','XGBoost', 'LightGBM', 'CatBoost'])
+    model_option = st.sidebar.selectbox('Wähle ein Modell für die Analyse:', ['Wähle das Modell','XGBoost', 'LightGBM', 'CatBoost'])
 
     warnings.filterwarnings('ignore')
 
@@ -243,8 +244,9 @@ def main():
     elif model_option == 'XGBoost':
         try:
             #Modeltraining
-            params = set_params_xgb()
-            bst = train_model(data_train, target_train, params)
+            if 'bst' not in st.session_state:
+                params = set_params_xgb()
+                bst = train_model(data_train, target_train, params)
 
             # Accuracy berechnen
             accuracy, xgboost_pred = calculate_accuracy_and_predictions(bst, data_test, target_test)
@@ -252,31 +254,25 @@ def main():
 
             plot_accuracy_bar_chart(accuracy, 'XGBoost')
 
-            if st.checkbox('Sankey Diagram erstellen'):
-                st.header('***Sankey Diagram für XGBoost:***')
-                # Generiere das Sankey-Diagramm
-                fig = generate_Sankey(xgboost_pred, target_test, le)
+            if st.sidebar.checkbox('Sankey Diagram erstellen'):
+                if 'sankey_fig' not in st.session_state:
+                    st.header('***Sankey Diagram für XGBoost:***')
+                    st.session_state.sankey_fig = generate_Sankey(xgboost_pred, target_test, le)
+                st.plotly_chart(st.session_state.sankey_fig, use_container_width=True)
 
-
-                st.plotly_chart(fig, use_container_width=True)
-
-            if st.checkbox('Shapley Values berechnen'):
-                #with col1:
+            if st.sidebar.checkbox('Shapley Values berechnen'):
                 st.subheader('***Shapley-Werte für XGBoost:***')
-                    # Shapley-Werte generieren
-                shap_values, explainer = generate_Shapley(data_train, bst)
+                if 'shap_values' not in st.session_state:
+                    st.session_state.shap_values, explainer = generate_Shapley(data_train, st.session_state.bst)
                 st.set_option('deprecation.showPyplotGlobalUse', False)
-                shap.summary_plot(shap_values, data_train, plot_type="bar", show=False)
+                shap.summary_plot(st.session_state.shap_values, data_train, plot_type="bar", show=False)
                 st.pyplot(bbox_inches='tight', pad_inches=0)
 
-            if st.checkbox('Confusion Matrix generieren'):
-                #col1, col2 = st.columns(2)
-                #with col2:
-                st.subheader('***Confusionmatrix für XGBoost:***')
-                    # Berechnung der Confusion Matrix
-                fig = plot_confusion_matrix(target_test, xgboost_pred, class_names)
-                st.pyplot(fig)
-
+            if st.sidebar.checkbox('Confusion Matrix generieren'):
+                if 'confusion_fig' not in st.session_state:
+                    st.subheader('***Confusionmatrix für XGBoost:***')
+                    st.session_state.confusion_fig = plot_confusion_matrix(target_test, xgboost_pred, class_names)
+                st.pyplot(st.session_state.confusion_fig)
 
             st.write('XGBoost-Modell wurde ausgewählt.')
 
@@ -296,24 +292,24 @@ def main():
 
             plot_accuracy_bar_chart(accuracy, 'LightGBM')
 
-            if st.checkbox('Sankey Diagram erstellen'):
+            if st.sidebar.checkbox('Sankey Diagram erstellen'):
                 # Generiere das Sankey-Diagramm für LightGBM
                 st.header('***Sankey Diagram für LightGBM:***')
                 generate_Sankey(lightgbm_pred, target_test, le)
                 st.plotly_chart(generate_Sankey(lightgbm_pred, target_test, le), use_container_width=True)
 
-            if st.checkbox('Shapley Values berechnen'):
+            if st.sidebar.checkbox('Shapley Values berechnen'):
 
-                    # Shapley Values
+                # Shapley Values
                 shap_values, explainer = generate_Shapley(data_test, clf)
                 st.header('***Shapley-Werte für LightGBM:***')
                 shap_values, explainer = generate_Shapley(data_train, clf)
                 shap.summary_plot(shap_values, data_train, plot_type="bar", show=False)
                 st.pyplot(bbox_inches='tight', pad_inches=0)
 
-            if st.checkbox('Confusion Matrix generieren'):
+            if st.sidebar.checkbox('Confusion Matrix generieren'):
 
-                    # Berechnung der Confusion Matrix
+                # Berechnung der Confusion Matrix
                 fig = plot_confusion_matrix(target_test, lightgbm_pred, class_names)
                 st.pyplot(fig)
 
@@ -335,23 +331,23 @@ def main():
 
             plot_accuracy_bar_chart(accuracy, 'CatBoost')
 
-            if st.checkbox('Sankey Diagram erstellen'):
+            if st.sidebar.checkbox('Sankey Diagram erstellen'):
                 # Generiere das Sankey-Diagramm für CatBoost
                 st.header('***Sankey Diagram für CatBoost:***')
                 fig = generate_Sankey(catboost_pred, target_test, le)
                 st.plotly_chart(fig, use_container_width=True)
 
-            if st.checkbox('Shapley Values berechnen'):
+            if st.sidebar.checkbox('Shapley Values berechnen'):
 
-                    # Shapley-Werte generieren
+                # Shapley-Werte generieren
                 shap_values, explainer = generate_Shapley(data_train, cat_model)
                 st.header('***Shapley-Werte für CatBoost:***')
                 shap.summary_plot(shap_values, data_train, plot_type="bar", show=False)
                 st.pyplot(bbox_inches='tight', pad_inches=0)
 
-            if st.checkbox('Confusion Matrix generieren'):
+            if st.sidebar.checkbox('Confusion Matrix generieren'):
 
-                    # Berechnung der Confusion Matrix
+                # Berechnung der Confusion Matrix
                 fig = plot_confusion_matrix(target_test, catboost_pred, class_names)
                 st.pyplot(fig)
 
