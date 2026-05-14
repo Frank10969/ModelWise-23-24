@@ -1,21 +1,24 @@
-<p align="center">
-  An advanced <b>Streamlit dashboard</b> for soil organic carbon prediction and model interpretability.
-</p>
+<div align="center">
 
-<p align="center">
-  <img alt="Python Version" src="https://img.shields.io/badge/python-3.9%20%7C%203.11-blue">
-  <img alt="Streamlit" src="https://img.shields.io/badge/Streamlit-FF4B4B?style=flat&logo=Streamlit&logoColor=white">
-  <img alt="XGBoost" src="https://img.shields.io/badge/XGBoost-000000?style=flat">
-  <img alt="LightGBM" src="https://img.shields.io/badge/LightGBM-FFB900?style=flat">
-  <img alt="CatBoost" src="https://img.shields.io/badge/CatBoost-FF4620?style=flat">
-  <img alt="License" src="https://img.shields.io/badge/license-MIT-green">
-</p>
+# ModelWise
+
+An advanced **Streamlit dashboard** for soil organic carbon prediction and model interpretability.
+
+<br />
+
+![Python Version](https://img.shields.io/badge/python-3.9%20%7C%203.11-blue)
+![Streamlit](https://img.shields.io/badge/Streamlit-FF4B4B?style=flat&logo=Streamlit&logoColor=white)
+![XGBoost](https://img.shields.io/badge/XGBoost-000000?style=flat)
+![LightGBM](https://img.shields.io/badge/LightGBM-FFB900?style=flat)
+![CatBoost](https://img.shields.io/badge/CatBoost-FF4620?style=flat)
+![License](https://img.shields.io/badge/license-MIT-green)
+
+<hr>
+
+[Features](#features) • [Installation](#installation) • [Usage](#usage) • [Project Background](#project-background) • [Milestones](#milestones)
 
 <hr>
 
-[Features](#features) | [Installation](#installation) | [Usage](#usage) | [Project Background](#project-background) | [Milestones](#milestones)
-
-<hr>
 </div>
 
 ## Project Background
