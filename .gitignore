@@ -1,0 +1,22 @@
+# Data files
+data/
+!data/lucas_organic_carbon_target.csv
+
+# Temporary image folders
+folder1/
+folder2/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Environment
+.env
+.venv
+env/
+venv/
+ENV/
+
+# Streamlit
+.streamlit/secrets.toml
