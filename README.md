@@ -1,23 +1,16 @@
 <p align="center">
-  <img src="https://img.icons8.com/external-flat-juicy-fish/100/000000/external-analysis-big-data-flat-juicy-fish.png" alt="ModelWise Logo" width="100" height="100">
-</p>
-
-<h1 align="center">ModelWise: Interactive Comparison of Classification Models</h1>
-
-<p align="center">
   An advanced <b>Streamlit dashboard</b> for soil organic carbon prediction and model interpretability.
-  <br>
-  Developed as part of the <b>VA_r_z_Daten</b> project.
 </p>
 
 <p align="center">
   <img alt="Python Version" src="https://img.shields.io/badge/python-3.9%20%7C%203.11-blue">
   <img alt="Streamlit" src="https://img.shields.io/badge/Streamlit-FF4B4B?style=flat&logo=Streamlit&logoColor=white">
-  <img alt="XGBoost" src="https://img.shields.io/badge/XGBoost-black?style=flat">
+  <img alt="XGBoost" src="https://img.shields.io/badge/XGBoost-000000?style=flat">
+  <img alt="LightGBM" src="https://img.shields.io/badge/LightGBM-FFB900?style=flat">
+  <img alt="CatBoost" src="https://img.shields.io/badge/CatBoost-FF4620?style=flat">
   <img alt="License" src="https://img.shields.io/badge/license-MIT-green">
 </p>
 
-<div align="center">
 <hr>
 
 [Features](#features) | [Installation](#installation) | [Usage](#usage) | [Project Background](#project-background) | [Milestones](#milestones)
